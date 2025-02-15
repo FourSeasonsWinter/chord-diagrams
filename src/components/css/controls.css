@@ -1,0 +1,17 @@
+.controls {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  position: absolute;
+  bottom: 0;
+  margin: 7rem 0;
+}
+
+.controls button {
+  width: 20vw;
+  height: 10vw;
+  border: 2px solid white;
+  background-color: transparent;
+}
