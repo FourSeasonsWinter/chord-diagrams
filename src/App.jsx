@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Carousel from "./components/Carousel";
-import Controls from "./components/Controls";
-import "./App.css"
+import guitarChords from "./assets/guitar.json";
+import "./App.css";
 
 function App() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -18,34 +18,43 @@ function App() {
     barres: [{ fret: 1, fromString: 1, toString: 6 }],
   };
 
-  const diagrams = [
-    CMajorChord,
-    FMajorChord,
-    CMajorChord,
-    FMajorChord,
-    CMajorChord,
-    FMajorChord,
-  ];
+  function loadChords(key) {
+    const diagrams = [];
+    const positions = guitarChords.chords[`${key}`][0].positions;
 
-  function handleLeft() {
-    if (activeSlide === 0)
-      return;
+    for (let i = 0; i < positions.length; ++i) {
+      const chord = positions[i];
 
-    setActiveSlide(activeSlide - 1)
-  }
+      if (chord.barres.length != 0) {
+        const value = chord.barres[0];
+        const from = chord.frets.indexOf(value) + 1;
+        const to = chord.frets.lastIndexOf(value) + 1;
 
-  function handleRight() {
-    if (activeSlide === diagrams.length - 1)
-      return;
+        const newChord = {
+          name: "",
+          frets: chord.frets,
+          baseFret: chord.baseFret,
+          barres: [{ fret: value, fromString: from, toString: to }],
+        };
 
-    setActiveSlide(activeSlide + 1)
+        diagrams.push(newChord);
+        continue;
+      }
+
+      diagrams.push(chord);
+    }
+
+    return diagrams;
   }
 
   return (
     <>
       <h1>Chords</h1>
-      <Carousel diagrams={diagrams} activeSlide={activeSlide} onDiagramClick={(index) => setActiveSlide(index)} />
-      <Controls onLeft={handleLeft} onPlay={() => {}} onRight={handleRight} />
+      <Carousel
+        diagrams={loadChords("F")}
+        activeSlide={activeSlide}
+        onDiagramClick={(index) => setActiveSlide(index)}
+      />
     </>
   );
 }

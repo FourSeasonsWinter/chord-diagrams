@@ -16,7 +16,6 @@ export default function Carousel({ diagrams, activeSlide, onDiagramClick }) {
 
   return (
     <div className="carousel-container">
-      <ChordDiagram name="" frets={[]} barres={[]} />
       {diagrams.map((diagram, index) => {
         return (
           <div

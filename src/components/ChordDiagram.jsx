@@ -1,9 +1,4 @@
-export default function ChordDiagram({
-  name,
-  frets,
-  barres,
-  startingFret = 1,
-}) {
+export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
   // Dimensions and Spacing
   const svgWidth = 120;
   const svgHeight = 180;
@@ -62,13 +57,13 @@ export default function ChordDiagram({
             x2={svgWidth - 5}
             y2={i * fretSpacing + 40}
             stroke={color}
-            strokeWidth={i === 0 && startingFret === 1 ? 3 : 1}
+            strokeWidth={i === 0 && baseFret === 1 ? 3 : 1}
           />
         );
       })}
 
       {/* Starting Fret Number */}
-      {startingFret > 1 && (
+      {baseFret > 1 && (
         <text
           x={-8}
           y={44 + fretSpacing / 2}
@@ -76,7 +71,7 @@ export default function ChordDiagram({
           textAnchor="end"
           fill={color}
         >
-          {startingFret}
+          {baseFret}
         </text>
       )}
 
@@ -148,8 +143,7 @@ export default function ChordDiagram({
           const { fret, fromString, toString } = barre;
           const xStart = (fromString - 1) * stringSpacing + 5;
           const xEnd = (toString - 1) * stringSpacing + 5;
-          const y =
-            (fret - startingFret + 1) * fretSpacing + 30 - fretSpacing / 2;
+          const y = (fret - baseFret + 1) * fretSpacing + 30 - fretSpacing / 2;
 
           return (
             <rect
