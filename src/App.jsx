@@ -2,29 +2,36 @@ import { useState } from "react";
 import Carousel from "./components/Carousel";
 import guitarChords from "./assets/guitar.json";
 import "./App.css";
+import { useEffect } from "react";
+import SearchBar from "./components/SearchBar";
+
+const CMajorChord = {
+  name: "C Major",
+  frets: [-1, 3, 2, 0, 1, 0],
+  barres: [],
+};
+
+const FMajorChord = {
+  name: "F Major",
+  frets: [1, 3, 3, 2, 1, 1],
+  barres: [{ fret: 1, fromString: 1, toString: 6 }],
+};
 
 function App() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [chordName, setChordName] = useState("");
+  const [diagrams, setDiagrams] = useState([]);
 
-  const CMajorChord = {
-    name: "C Major",
-    frets: [-1, 3, 2, 0, 1, 0],
-    barres: [],
-  };
-
-  const FMajorChord = {
-    name: "F Major",
-    frets: [1, 3, 3, 2, 1, 1],
-    barres: [{ fret: 1, fromString: 1, toString: 6 }],
-  };
-
-  function loadChords(key) {
+  function loadChords(key, suffix = "dim") {
     const diagrams = [];
-    const positions = guitarChords.chords[`${key}`][0].positions;
+    const suffixes = guitarChords.suffixes;
+    const positions =
+      guitarChords.chords[`${key}`][suffixes.indexOf(suffix)].positions;
 
     for (let i = 0; i < positions.length; ++i) {
       const chord = positions[i];
 
+      // Modify the data from the json
       if (chord.barres.length != 0) {
         const value = chord.barres[0];
         const from = chord.frets.indexOf(value) + 1;
@@ -44,14 +51,22 @@ function App() {
       diagrams.push(chord);
     }
 
-    return diagrams;
+    setActiveSlide(0)
+    setChordName(key + suffix)
+    setDiagrams(diagrams);
   }
+
+  useEffect(() => {
+    loadChords("C")
+  }, [])
 
   return (
     <>
-      <h1>Chords</h1>
+      <div className="search-bar">
+        <SearchBar onSelect={item => console.log(item)} />
+      </div>
       <Carousel
-        diagrams={loadChords("F")}
+        diagrams={diagrams}
         activeSlide={activeSlide}
         onDiagramClick={(index) => setActiveSlide(index)}
       />
