@@ -41,6 +41,7 @@ export default function SearchBar({ onSelect }) {
         type="text"
         value={input}
         onChange={(event) => handleInputChange(event)}
+        autoComplete="new-password"
       />
       <ul>
         {results.map((item, index) => {

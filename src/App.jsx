@@ -19,7 +19,6 @@ const FMajorChord = {
 
 function App() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [chordName, setChordName] = useState("");
   const [diagrams, setDiagrams] = useState([]);
 
   function loadChords(key, suffix = "dim") {
@@ -51,19 +50,35 @@ function App() {
       diagrams.push(chord);
     }
 
-    setActiveSlide(0)
-    setChordName(key + suffix)
+    setActiveSlide(0);
     setDiagrams(diagrams);
   }
 
+  function onSelect(chordName) {
+    let key;
+    let suffix;
+
+    const number = chordName[1] === "#" || chordName[1] === "b" ? 2 : 1;
+
+    key = chordName.substring(0, number).trim();
+    suffix = chordName.substring(number).trim();
+
+    // Change # to sharp
+    // TODO update the guitar.json data
+    if (key.length === 2 && key[1] === '#')
+      key = key[0] + 'sharp'
+
+    loadChords(key, suffix);
+  }
+
   useEffect(() => {
-    loadChords("C")
-  }, [])
+    loadChords("C");
+  }, []);
 
   return (
     <>
       <div className="search-bar">
-        <SearchBar onSelect={item => console.log(item)} />
+        <SearchBar onSelect={(item) => onSelect(item)} />
       </div>
       <Carousel
         diagrams={diagrams}
