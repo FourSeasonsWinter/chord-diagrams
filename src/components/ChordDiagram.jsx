@@ -5,8 +5,8 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
   const numFrets = 4;
   const numStrings = 6;
 
-  const stringSpacing = svgWidth / (numStrings - 1) - 2;
-  const fretSpacing = (svgHeight - 20) / (numFrets + 1);
+  const stringSpacing = svgWidth / (numStrings - 1) - 4;
+  const fretSpacing = (svgHeight - 40) / (numFrets + 1);
 
   const color = "#ffffff";
 
@@ -32,7 +32,7 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
 
       {/* Strings */}
       {[...Array(numStrings)].map((_, i) => {
-        let x = i * stringSpacing + 5;
+        let x = i * stringSpacing + 10;
 
         return (
           <line
@@ -40,7 +40,7 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
             x1={x}
             y1={40}
             x2={x}
-            y2={svgHeight - 12}
+            y2={svgHeight - 28}
             stroke={color}
             strokeWidth="1"
           />
@@ -52,9 +52,9 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
         return (
           <line
             key={`fret-${i}`}
-            x1="5"
+            x1="10"
             y1={i * fretSpacing + 40}
-            x2={svgWidth - 5}
+            x2={svgWidth - 10}
             y2={i * fretSpacing + 40}
             stroke={color}
             strokeWidth={i === 0 && baseFret === 1 ? 3 : 1}
@@ -65,9 +65,9 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
       {/* Starting Fret Number */}
       {baseFret > 1 && (
         <text
-          x={-8}
-          y={44 + fretSpacing / 2}
-          fontSize="12"
+          x={7.5}
+          y={31.5 + fretSpacing / 2}
+          fontSize="9"
           textAnchor="end"
           fill={color}
         >
@@ -77,7 +77,7 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
 
       {/* Open and Muted Strings */}
       {frets.map((fret, i) => {
-        let x = i * stringSpacing + 5;
+        let x = i * stringSpacing + 10;
 
         if (fret === 0) {
           return (
@@ -122,7 +122,7 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
                 i + 1 <= barre.toString
             ))
         ) {
-          const x = i * stringSpacing + 5;
+          const x = i * stringSpacing + 10;
           const y = fret * fretSpacing + 40;
 
           return (
@@ -130,7 +130,7 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
               key={`dot-${i}`}
               cx={x}
               cy={(y - fretSpacing / 2).toString()}
-              r="8"
+              r="7.5"
               fill={color}
             />
           );
@@ -141,9 +141,9 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
       {barres &&
         barres.map((barre, index) => {
           const { fret, fromString, toString } = barre;
-          const xStart = (fromString - 1) * stringSpacing + 5;
-          const xEnd = (toString - 1) * stringSpacing + 5;
-          const y = (fret - baseFret + 1) * fretSpacing + 30 - fretSpacing / 2;
+          const xStart = (fromString - 1) * stringSpacing + 10;
+          const xEnd = (toString - 1) * stringSpacing + 10;
+          const y = fretSpacing + 32 - fretSpacing / 2;
 
           return (
             <rect
@@ -151,7 +151,7 @@ export default function ChordDiagram({ name, frets, barres, baseFret = 1 }) {
               x={xStart - 4}
               y={y}
               width={xEnd - xStart + 8}
-              height="16"
+              height="15.5"
               rx="8"
               ry="8"
               fill={color}
